@@ -87,7 +87,10 @@ class AbstractExam(object):
         self.exam_name = exam_name
         self.questions = []   # Empty list to add question objects.
 
-        self.grading_guide
+        self.grading_guide = {
+            'name': self.exam_name,
+            'questions': self.questions
+        }
 
 
         
