@@ -68,34 +68,31 @@ class AbstractQuestion(object):
         self.question = question
         self.answer = answer
 
-        # Will show the question & correct answer in a dictionary.
-
-        self.correct_answer = {
-            'question': self.question,
-            'correct_answer': self.answer
+        self.q_and_a = {
+            'Question:': self.question,
+            'Correct Answer:': self.answer,
         }
 
+        # Tried to get to show the question & correct answer in a dictionary here, cou.
 
-trick = AbstractQuestion('What is your favorite color?', 'Nobody cares.')
 
-
-class AbstractExam(object):
+class AbstractExam(AbstractQuestion):
     """Template for creating an exam. """
+
+    exam_questions = []   # Empty list to add question objects.
 
     def __init__(self, exam_name):
 
         self.exam_name = exam_name
-        self.questions = []   # Empty list to add question objects.
 
-        self.grading_guide = {
-            'name': self.exam_name,
-            'questions': self.questions
-        }
+    def add_question(self, prompt, correct_answer):
+        """Adds a new question & the answer to the exam instance."""
 
+        self.prompt = prompt
+        self.correct_answer = correct_answer
+        self.new_question = super(AbstractExam, self).__init__(question=self.prompt, answer=self.correct_answer)
 
-        
-
-
-
+        # adds the new question to the list of exam questions
+        self.exam_questions.append(self.q_and_a)
 
 
