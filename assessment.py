@@ -5,11 +5,13 @@ Part 1: Discussion
 1. What are the three main design advantages that object orientation
    can provide? Explain each concept.
 
-    Abstraction: Reduces complexity by 
+    Abstraction: Reduces complexity by creating a simplified version to create from,
+        like a template.
 
-    Encapsulation: 
+    Encapsulation: Reduce repetition and duplicate code that ends up performing
+        the same purpose in different places on different things.
 
-    Polymorphism:
+    Polymorphism: Flexibility to have similar but differing types of things.
 
 2. What is a class?
 
@@ -19,18 +21,27 @@ Part 1: Discussion
 
 3. What is an instance attribute?
 
-    It is a characteristic of an instance/object of a class. The instance attribute
-    does not belong to the 
+    It is a piece of data that exists on the specfic instance/object of a class,
+    not on the class itself.
 
 4. What is a method?
 
-    A function that exists as a class attribute. 
+    A function that exists as a class attribute and can be called on instances
+    created from the class.
 
 5. What is an instance in object orientation?
+
+    It is an object or specific instance created from a class.
 
 6. How is a class attribute different than an instance attribute?
    Give an example of when you might use each.
 
+   A class attribute is data on the class and belongs to all subclasses or
+   instances created from the class. An instance attribute is set on the
+   instance itself. You would use a class attribute if you know that it is an
+   attribute of all subclasses, such as an was_animal attribute on a Meat class.
+   However, you would use an instance attribute if it only belongs to that instance,
+   such as a can_make_BLT attribute on a bacon instance of Meat.
 
 """
 # Parts 2 through 5:
@@ -73,10 +84,8 @@ class AbstractQuestion(object):
             'Correct Answer:': self.answer,
         }
 
-        # Tried to get to show the question & correct answer in a dictionary here, cou.
 
-
-class AbstractExam(AbstractQuestion):
+class AbstractExam(AbstractQuestion):                
     """Template for creating an exam. """
 
     exam_questions = []   # Empty list to add question objects.
@@ -90,9 +99,7 @@ class AbstractExam(AbstractQuestion):
 
         self.prompt = prompt
         self.correct_answer = correct_answer
-        self.new_question = super(AbstractExam, self).__init__(question=self.prompt, answer=self.correct_answer)
+        self.new_question = super(AbstractExam, self).__init__(question=self.prompt, answer=self.correct_answer) 
 
         # adds the new question to the list of exam questions
         self.exam_questions.append(self.q_and_a)
-
-
