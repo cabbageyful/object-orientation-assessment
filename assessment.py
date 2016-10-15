@@ -79,27 +79,60 @@ class AbstractQuestion(object):
         self.question = question
         self.answer = answer
 
-        self.q_and_a = {
-            'Question:': self.question,
-            'Correct Answer:': self.answer,
+        self.master_q_a = {
+            'question': self.question,
+            'correct answer': self.answer,
         }
 
+    def ask_question(self):
 
-class AbstractExam(AbstractQuestion):                
+        student_guess = raw_input(self.question + ' > ')
+        student_guess = student_guess.strip()
+        if isinstance(self.answer, int):
+            try:
+                student_guess = int(student_guess)
+            except TypeError:
+                return False
+        elif isinstance(self.answer, float):
+            try:
+                student_guess = float(student_guess)
+            except TypeError:
+                return False
+        elif isinstance(self.answer, str):
+            self.answer = self.answer.lower()
+            student_guess = student_guess.lower()
+
+        if self.answer == student_guess:
+            return True
+        else:
+            return False
+
+
+class AbstractExam(AbstractQuestion):
     """Template for creating an exam. """
 
-    exam_questions = []   # Empty list to add question objects.
-
-    def __init__(self, exam_name):
+    def __init__(self, exam_name, questions=[]):
 
         self.exam_name = exam_name
+        self.exam_questions = questions
 
-    def add_question(self, prompt, correct_answer):
+    def add_question(self, question, answer):
         """Adds a new question & the answer to the exam instance."""
 
-        self.prompt = prompt
-        self.correct_answer = correct_answer
-        self.new_question = super(AbstractExam, self).__init__(question=self.prompt, answer=self.correct_answer) 
+        new_question = AbstractQuestion(question, answer)
 
-        # adds the new question to the list of exam questions
-        self.exam_questions.append(self.q_and_a)
+        self.exam_questions.append(new_question)
+
+    def take_exam(self):
+
+        correct_responses = 0
+
+        for q in self.exam_questions:
+            test_q = q.ask_question()
+            if test_q is True:
+                correct_responses += 1
+
+        score = float(correct_responses) / len(self.exam_questions) * 100
+
+        return 'You got {} correct out of {} total, your grade is {:.2f}%'.format(
+               correct_responses, len(self.exam_questions), score)
