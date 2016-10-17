@@ -85,6 +85,9 @@ class AbstractQuestion(object):
         }
 
     def ask_question(self):
+        """Prints question to console and evaluates response against correct
+        answer, returns either True or False.
+        """
 
         student_guess = raw_input(self.question + ' > ')
         student_guess = student_guess.strip()
@@ -108,7 +111,7 @@ class AbstractQuestion(object):
             return False
 
 
-class AbstractExam(AbstractQuestion):
+class AbstractExam(object):
     """Template for creating an exam. """
 
     def __init__(self, exam_name, questions=[]):
@@ -124,6 +127,7 @@ class AbstractExam(AbstractQuestion):
         self.exam_questions.append(new_question)
 
     def take_exam(self):
+        """Adminsters the exam and returns a percentage score."""
 
         correct_responses = 0
 
@@ -134,5 +138,43 @@ class AbstractExam(AbstractQuestion):
 
         score = float(correct_responses) / len(self.exam_questions) * 100
 
-        return 'You got {} correct out of {} total, your grade is {:.2f}%'.format(
-               correct_responses, len(self.exam_questions), score)
+        print 'You got {} correct out of {} total, your grade is {:.2f}%'.format(
+              correct_responses, len(self.exam_questions), score)
+        return score
+
+
+def take_test(test, student):
+    """Given an exam and a student, exam is administered to the student and test
+    score is assigned to the student as a new attribute.
+    """
+
+    assert isinstance(test, AbstractExam), 'Has this test been created?'
+    assert isinstance(student, AbstractStudent), 'Is this student in the records?'
+
+    new_test = test.take_exam()
+    student.score = new_test
+
+
+def example():
+    """Creates an sample exam and student, runs test for sample student in console
+    and saves students' score."""
+
+    sample = AbstractStudent('Suzie', 'Sampler', '1 Hacker Wy')
+
+    print 'Hi there, {} {}!'.format(sample.first_name, sample.last_name)
+
+    fake_exam = AbstractExam('fake')
+
+    fake_A = AbstractQuestion('How many nations are in the African continent?',
+                              55)
+    fake_B = AbstractQuestion('What is the primary built-in python testing module?',
+                              'unittest')
+    fake_C = AbstractQuestion('Round pi to the nearest thousandth.', 3.142)
+
+    fake_exam.add_question(fake_A.question, fake_A.answer)
+    fake_exam.add_question(fake_B.question, fake_B.answer)
+    fake_exam.add_question(fake_C.question, fake_C.answer)
+
+    print 'Your exam is ready!'
+
+    take_test(fake_exam, sample)
